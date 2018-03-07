@@ -1,0 +1,62 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title># EON nyomtatási megjelenítő.</title>
+  
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+  
+  <!-- All the files that are required -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+</head>
+<body>
+    <script src="https://use.typekit.net/ayg4pcz.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+    <div class="container">
+      <div class="jumbotron">
+      <h1 class="text-center">EON Nyomtatási megjelenítő rendszer</h1>
+        <h1 class="text-center"><small class='login_title text-center'>Jelentkezz be!</small></h1>
+      </div>
+        {% if hibas_bejelentkezes is not none and hibas_bejelentkezes %}
+          <h4 class='login_title text-center'>Hibás felhasználónév vagy jelszó!</h4>
+        {% endif %}
+        <div class="container">
+          <div class="row">
+            <div class="col-2 col-md-2"> </div>
+            <div class="col-6 col-md-6">
+                <form class="form-signin" method="POST" role="form">
+                    <div class="card card-container">
+                      <span id="reauth-email" class="reauth-email"></span>
+                      <p class="input_title">Email</p>
+                      <input type="text" name="email" id="email" class="login_box" placeholder="minta@eon.com" required autofocus>
+                      <p class="input_title">Jelszó</p>
+                      <input type="password" id="password" name="password" class="login_box" placeholder="******" required>
+                    </div>
+                    <div class="card card-container">
+                      <br/>
+                      <button class="btn btn-lg btn-primary" type="submit">Bejelentkezés</button><br/>
+                    </div>
+                    <div class="card card-container">
+                      <br/>
+                      <a href="/jelszo_csere" class="btn btn-info" role="button">Jelszó csere</a>
+                    </div>
+                </form><!-- /form -->
+            </div><!-- /card-container -->
+            <div class="col-4 col-md-4">
+              <label>
+                  <h3>Nincs felhasználód?</h3>
+                  <a href="mailto:#">istvan.szilagyi.ext@eon.com</a><br/>
+                  <span class="badge"><abbr title="Telefon">Tel:</abbr> +36/30/506/6280</span><br/>
+              </label>
+            </div>
+          </div>
+        </div>
+    </div><!-- /container -->
+</body>
+</html>

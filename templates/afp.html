@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>EON ICP feldolgozas listaja {{ date }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  /* Note: Try to remove the following lines to see the effect of CSS positioning */
+  .affix {
+      top: 0;
+      width: 100%;
+      z-index: 9999 !important;
+  }
+
+  .affix + .container-fluid {
+      padding-top: 70px;
+  }
+  </style>
+</head>
+<body>
+
+	<div class="jumbotron">
+	<h1>EON {{system}} napi feldolgozás <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}} </small> </h1> 
+	<div class="container">
+        <div class="col-md-1 col-md-offset-1"><h4>Bejelentkezve: </h4><span class="label label-default">{{ logged_in_as }}</span></div>
+    </div>
+	</div>
+
+	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
+ 		<ul class="nav navbar-nav">
+ 		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
+ 		  <li><a href="/zip/{{system}}"><span class="glyphicon glyphicon-envelope"> </span> ZIP</a></li>
+ 		  <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
+ 		</ul>
+	</nav>
+
+	<div class="container-fluid">
+	{% if content is defined and content|length > 0%}
+	<table class="table table-hover table-sm table-nonfluid">
+		<thead class="thead-default">
+			<TR>
+				<TH>Felhasználó</TH>
+				<TH>Méret</TH>
+				<TH>Dátum</TH>
+				<TH>Időpont</TH>
+				<TH>Fájlnév</TH>
+			</TR>
+		</thead>
+		{% for line in content%}
+			<TR>
+				<TD>{{ line[0] }}</TD>
+				<TD>{{ line[1] }}</TD>
+				<TD>{{ line[2] }}</TD>
+				<TD>{{ line[3] }}</TD>
+				<TD><a href="/download/{{system}}/{{line[4]}}" download><span class="glyphicon glyphicon-cloud-download"></span></a> {{line[4]}}</TD>
+			</TR>
+		{% endfor %}
+	</table>
+	{% else %}
+		<h2>Nem talaltam adatot a {{date.strftime('%Y.%m.%d')}} napra.</h2>
+	{% endif %}
+	</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title># EON nyomtatási megjelenítő.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1>  EON Nyomtatási alrendszer állományai</h1>
+    <div class="container">
+      <div class="col-md-1 col-md-offset-1"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
+
+  <div class="container">
+        <table class="table table-striped">
+          <tr>
+            <td><div class="col-lg-3"><h3>ICP</h3></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+          </tr>
+          <tr>
+            <td><div class="col-lg-3"><h3>PU5</h3></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+          </tr>
+          <tr>
+           <td><div class="col-lg-3"><h3>ICQ</h3></div></td>
+           <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+           <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+           <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+          </tr>
+          <tr>
+            <td><div class="col-lg-3"><h3>QU5</h3></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+          </tr>
+        </table>
+        <table class="table table-striped">
+          <tr>
+            <td><div class="col-lg-2"><h3>Riportok</h3></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/napi_nyitott" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Napi nyitott</a></div></td>
+            <td><div class="col-md-2 col-md-offset-5"><a href="/napi_zsort" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Napi ZSORT</a></div></td>
+          </tr>
+        </table>
+        <div class="col-md-2 col-md-offset-5"><a href="/kijelentkezes" type="button" class="btn btn-default"><span class="glyphicon glyphicon-log-out"></span>Kijelentkezés</a></div>
+</div>
+</body>
+</html>

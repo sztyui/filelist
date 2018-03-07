@@ -1,0 +1,24 @@
+# Config files:
+*.conf
+
+# Databases:
+*.sqlite
+*.db
+
+# Database folders:
+/databases/*
+
+# tmp folder
+/tmp/*
+
+# certs mappa
+/certs/*
+*.key
+*.cert
+*.cer
+*.crt
+*.pem
+
+# .pyc fajlok
+*.pyc
+/__pycache__/*
