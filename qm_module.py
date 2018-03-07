@@ -4,10 +4,12 @@ from flask import (
 	after_this_request)
 import flask_login
 try:
-	from .ssh import ssh, config
+	from .ssh import ssh
+	from .config import config
 	from .environment import PATH, TEMPLATE_ENVIRONMENT
 except Exception as e:
-	from ssh import ssh, config
+	from ssh import ssh
+	from config import config
 	from environment import PATH, TEMPLATE_ENVIRONMENT
 
 import urllib.parse

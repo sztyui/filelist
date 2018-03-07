@@ -1,10 +1,15 @@
+try:
+	from .config import config
+except:
+	from config import config
+
 from flask import Flask
 import flask_login
 import ssl
 import os
 
 app = Flask(__name__)
-app.secret_key = 'Eon123'
+app.secret_key = config['app']['secret_key']
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)

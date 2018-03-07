@@ -4,10 +4,12 @@ from flask import (Blueprint, url_for,
 import flask_login
 try:
 	from .environment import PATH, TEMPLATE_ENVIRONMENT
-	from .ssh import ssh, config
+	from .ssh import ssh
+	from .config import config
 except Exception as e:
 	from environment import PATH, TEMPLATE_ENVIRONMENT
-	from ssh import ssh, config
+	from ssh import ssh
+	from config import config
 
 import datetime
 import zipfile
