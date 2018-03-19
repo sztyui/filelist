@@ -4,13 +4,29 @@ import flask_login
 try:
 	from .ssh import ssh
 	from .environment import PATH, TEMPLATE_ENVIRONMENT
+	from .config import config
 except Exception as e:
 	from ssh import ssh
 	from environment import PATH, TEMPLATE_ENVIRONMENT
+	from config import config
 
 index = Blueprint('index', __name__)
 
 last_file_in_folder = lambda x: "find {0} -maxdepth 1 -type f | sort -t_ -nk2,2 | tail -n1".format(x)
+
+def get_system_statuses():
+	result = dict()
+
+	def ask_running(system_name):
+		stdin, stdout, stderr = ssh.exec_command("ssh {user}@{server} 'ps -ef | grep \"[S]PG\"'".format(**config[system_name.lower()]))
+		return True if len(stdout.readlines()) else False
+
+	result['icq'] = ask_running("icq")
+	result['qu5'] = result['icq']
+	result['icp'] = ask_running("icp")
+	result['pu5'] = result['icp']
+
+	return result
 
 def get_file_content(folder):
 	stdin, stdout, stderr = ssh.exec_command(last_file_in_folder(folder))
@@ -43,4 +59,8 @@ def napi_zsort():
 @index.route("/menu")
 @flask_login.login_required
 def mainpage():
-	return TEMPLATE_ENVIRONMENT.get_template("index.html").render({"logged_in_as": flask_login.current_user.id})
+	system_statuses = get_system_statuses()
+	return TEMPLATE_ENVIRONMENT.get_template("index.html").render({
+		"logged_in_as": flask_login.current_user.id,
+		"system_statuses": system_statuses
+		})

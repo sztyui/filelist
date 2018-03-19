@@ -30,24 +30,60 @@
             <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}
+              <td>
+              {% if system_statuses['icp'] %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
+              {% else %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
+              {% endif %}
+              </td>
+            {% endif %}
           </tr>
           <tr>
             <td><div class="col-lg-3"><h3>PU5</h3></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/afp/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/zip/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/qm/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}
+              <td>
+              {% if system_statuses['pu5'] %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
+              {% else %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
+              {% endif %}
+              </td>
+            {% endif %}
           </tr>
           <tr>
            <td><div class="col-lg-3"><h3>ICQ</h3></div></td>
            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+           {% if system_statuses is defined %}
+              <td>
+              {% if system_statuses['icq'] %}
+                <div class="col-md-1 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
+              {% else %}
+                <div class="col-md-1 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
+              {% endif %}
+              </td>
+            {% endif %}
           </tr>
           <tr>
             <td><div class="col-lg-3"><h3>QU5</h3></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/afp/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/zip/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/qm/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}
+              <td>
+              {% if system_statuses['qu5'] %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
+              {% else %}
+                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
+              {% endif %}
+              </td>
+            {% endif %}
           </tr>
         </table>
         <table class="table table-striped">

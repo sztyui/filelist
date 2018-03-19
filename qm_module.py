@@ -29,22 +29,23 @@ def create_content(label, lines, system_folder):
 			continue
 		tmp = dict(zip(header, line_array))
 		tmp["fajl_helye"] = urllib.parse.urlencode({"sys": system_folder, "file": tmp['fajlnev']})
-		if ':' in tmp["ido"]:
-			tmp['time_format'] = "%Y.%m.%d %H:%M"
-			tmp["formatted_time"] = datetime.datetime.strptime("{3} {0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"], datetime.datetime.now().year), "%Y %b %d %H:%M")
-		else:
-			tmp['time_format'] = "%Y.%m.%d"
-			tmp["formatted_time"] = datetime.datetime.strptime("{0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"]), "%b %d %Y")
+		# if ':' in tmp["ido"]:
+		# 	tmp['time_format'] = "%Y.%m.%d %H:%M"
+		# 	tmp["formatted_time"] = datetime.datetime.strptime("{3} {0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"], datetime.datetime.now().year), "%Y %b %d %H:%M")
+		# else:
+		# 	tmp['time_format'] = "%Y.%m.%d"
+		# 	tmp["formatted_time"] = datetime.datetime.strptime("{0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"]), "%b %d %Y")
 		result.append(tmp)
 	return sorted(result, key=lambda x: x['formatted_time'], reverse=True)
 
 @qm.route('/qm/<system>')
 @flask_login.login_required
 def qm_page(system):
-	if system.lower() not in ['icp', 'pu5', 'icx', 'xu5']:
+	modif_sys = system.lower().replace('x', 'q')
+	if modif_sys not in config.sections():
 		abort(404)	# 404 mert nincs ilyen rendszer.
-	system_folder = '/usr/qm_{0}'.format(system.lower())
-	command = "ls -ltrh {0} | cut -d' ' -f 5-".format(system_folder)
+	system_folder = config.get(modif_sys, 'qm')
+	command = "find /usr/qm_icp/ -type f -newermt $(date -d \"-1 month\" \"+%Y-%m-%d\") -exec ls -ltrh {} \; | column -t | while read _ _ user _ size month day time name; do echo $user $size $(date -d \"$month $day $time\" \"+%m-%d %H:%M\") $name; done".format(modif_sys)
 	stdin, stdout, stderr = ssh.exec_command(command)
 	try:
 		content = create_content(header, stdout.readlines(), system_folder)

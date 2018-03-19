@@ -11,6 +11,7 @@ except Exception as e:
 	from ssh import ssh
 	from config import config
 
+import operator
 import datetime
 import zipfile
 import jinja2
@@ -28,15 +29,15 @@ def afplist(system):
 	if system not in ['ICP', 'PU5', 'ICX', 'XU5']:
 		return '<h1>Nincs ilyen rendszer: {0}</h1>'.format(system)
 	sysname = system.lower().replace('x', 'q')
-	connection_string = "ssh -n {user}@{server} 'cd {afp}; find . -type f -newermt $(date -d \"yesterday\" \"+%Y-%m-%d\") -exec ls -ltrh {{}} \; | column -t'".format(**config[sysname])
+	connection_string = "ssh -n {user}@{server} 'cd {afp}; find . -type f -newermt $(date -d \"-1 month\" \"+%Y-%m-%d\") -exec ls -ltrh {{}} \; | column -t | while read _ _ user _ size month day time name; do echo $user $size $(date -d \"$month $day $time\" \"+%m-%d %H:%M\") $name; done'".format(**config[sysname])
 	stdin, stdout, stderr = ssh.exec_command(connection_string)
 	result=list()
 	for line in stdout.readlines():
-		tmp_list = [x.strip() for x in line.split(" ") if x != '']
-		appendix = [tmp_list[2], tmp_list[4], " ".join(tmp_list[5:7]), tmp_list[7], tmp_list[8].strip("./")]
-		result.append(appendix)
+		tmp_list = dict(zip(["felhasznalo", "meret", "datum", "idopont", "fajlnev"], [x.strip() for x in line.split(" ") if x]))
+		result.append(tmp_list)
+	result.sort(key=lambda x: x["datum"], reverse=True)
 	return TEMPLATE_ENVIRONMENT.get_template("afp.html").render(
-		{"content":result, "date": datetime.datetime.now(), "system": system, "logged_in_as": flask_login.current_user.id}
+		{"content": result, "date": datetime.datetime.now(), "system": system, "logged_in_as": flask_login.current_user.id}
 	)
 
 @fl.route("/zip/<system>")

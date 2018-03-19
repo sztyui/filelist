@@ -35,7 +35,6 @@ app.register_blueprint(qm)
 # cer_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "certs", "cert.pem")
 # ctx.load_cert_chain(cer_file, priv_file)
 
-
 if __name__ == "__main__":
 	from werkzeug.serving import run_simple
 	#app.run("0.0.0.0", port=5000)

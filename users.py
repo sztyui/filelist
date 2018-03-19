@@ -21,8 +21,7 @@ class Users(Base):
 	def __repr__(self):
 		return "#ID: {id}, #Name: {name}, #Password: {password}, #Created_at: {created_at}, #Last_login: {last_login}".format(**self.__dict__)
 
-__engine_place = 'sqlite:///{0}'.format(os.path.join(os.path.dirname(os.path.realpath(__file__)), "databases", "server_users.sqlite"))
-print(__engine_place)
+__engine_place = 'sqlite:///{0}'.format(os.path.join("/tmp/database", "server_users.sqlite"))
 engine = create_engine(__engine_place)
 Session = sessionmaker(autoflush=True)
 Session.configure(bind=engine)
