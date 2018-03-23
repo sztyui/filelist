@@ -1,5 +1,6 @@
-from flask import Blueprint, Response
+from flask import Blueprint, Response, abort, request
 import flask_login
+import shlex
 
 try:
 	from .ssh import ssh
@@ -55,12 +56,15 @@ def napi_nyitott():
 def napi_zsort():
 	return get_file_content("/usr/strs/napi_zsort/")
 
-@index.route("/")
-@index.route("/menu")
+@index.route("/", methods = ['POST', 'GET'])
+@index.route("/menu", methods = ['POST', 'GET'])
 @flask_login.login_required
 def mainpage():
+	if request.method == 'POST':
+		return "HI {0}".format(request.method)
 	system_statuses = get_system_statuses()
 	return TEMPLATE_ENVIRONMENT.get_template("index.html").render({
 		"logged_in_as": flask_login.current_user.id,
 		"system_statuses": system_statuses
 		})
+

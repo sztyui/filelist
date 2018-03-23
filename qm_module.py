@@ -14,29 +14,11 @@ except Exception as e:
 
 import urllib.parse
 import datetime
+import shlex
+import json
 import os
 
 qm = Blueprint('qm', __name__)
-
-header = ["meret", "honap", "nap", "ido", "fajlnev"]
-def create_content(label, lines, system_folder):
-	if not isinstance(lines, list):
-		return AttributeError("Nem lista erkezett a line valtozoban a create_filename_dict fuggvenyben.")
-	result = list()
-	for line in lines:
-		line_array = line.strip('\t ').split()
-		if len(line_array) != len(header):
-			continue
-		tmp = dict(zip(header, line_array))
-		tmp["fajl_helye"] = urllib.parse.urlencode({"sys": system_folder, "file": tmp['fajlnev']})
-		# if ':' in tmp["ido"]:
-		# 	tmp['time_format'] = "%Y.%m.%d %H:%M"
-		# 	tmp["formatted_time"] = datetime.datetime.strptime("{3} {0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"], datetime.datetime.now().year), "%Y %b %d %H:%M")
-		# else:
-		# 	tmp['time_format'] = "%Y.%m.%d"
-		# 	tmp["formatted_time"] = datetime.datetime.strptime("{0} {1} {2}".format(tmp["honap"], tmp["nap"], tmp["ido"]), "%b %d %Y")
-		result.append(tmp)
-	return sorted(result, key=lambda x: x['formatted_time'], reverse=True)
 
 @qm.route('/qm/<system>')
 @flask_login.login_required
@@ -45,16 +27,21 @@ def qm_page(system):
 	if modif_sys not in config.sections():
 		abort(404)	# 404 mert nincs ilyen rendszer.
 	system_folder = config.get(modif_sys, 'qm')
-	command = "find /usr/qm_icp/ -type f -newermt $(date -d \"-1 month\" \"+%Y-%m-%d\") -exec ls -ltrh {} \; | column -t | while read _ _ user _ size month day time name; do echo $user $size $(date -d \"$month $day $time\" \"+%m-%d %H:%M\") $name; done".format(modif_sys)
-	stdin, stdout, stderr = ssh.exec_command(command)
+	command = "{0} {1}".format(config.get("nstrs2", "qm_list_api"), system_folder)
+	content = list()
 	try:
-		content = create_content(header, stdout.readlines(), system_folder)
+		_, _, _ = ssh.exec_command("ls {0}".format(system)) # Ez azert kell mert rohatt lassu a szamba...
+		stdin, stdout, stderr = ssh.exec_command(command)
+		for line in stdout.readlines():
+			tmp_d = json.loads(line)
+			tmp_d["fullpath"] = urllib.parse.urlencode({"fullpath": tmp_d['fullpath']})
+			content.append(tmp_d)
 	except AttributeError as e:
-		print("Hiba: {!r}".format(e))
+		print("Hiba: {!r}".format(e))	# Leszakadt a szamba... a faszamba... hahaha :(
 		abort(500)
 	template = TEMPLATE_ENVIRONMENT.get_template("qm.html")
 	return template.render({
-		"sorok" : content, 
+		"sorok" : sorted(content, key=lambda x: x["time"], reverse=True),
 		"date": datetime.datetime.now(), 
 		"system": system,
 		"logged_in_as": flask_login.current_user.id
@@ -63,9 +50,7 @@ def qm_page(system):
 @qm.route('/qm/download')
 @flask_login.login_required
 def qm_download():
-	system = request.args.get("sys")
-	file = request.args.get("file")
-	filename = os.path.join(system, file)
+	filename = request.args.get("fullpath")
 	local_file = os.path.join('/tmp', os.path.basename(filename))
 	sftp = ssh.open_sftp()
 	sftp.get(filename, local_file)

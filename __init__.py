@@ -3,14 +3,16 @@ try:
 except:
 	from config import config
 
-from flask import Flask
+from flask import Flask, flash
 import flask_login
 import ssl
 import os
 
+# App itself
 app = Flask(__name__)
 app.secret_key = config['app']['secret_key']
 
+# Login manager :)
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
@@ -19,16 +21,19 @@ try:
 	from .filelist import fl
 	from .index import index
 	from .qm_module import qm
+	from .email_to_bereizoli import bzmail
 except Exception as e:
 	print('Manual mode: {!r}'.format(e))
 	from login_logic import login
 	from filelist import fl
 	from index import index
 	from qm_module import qm
+	from email_to_bereizoli import bzmail
 
 app.register_blueprint(fl)
 app.register_blueprint(index)
 app.register_blueprint(qm)
+app.register_blueprint(bzmail)
 
 # ctx = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 # priv_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "certs", "key.pem")

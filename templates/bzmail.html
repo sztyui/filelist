@@ -1,0 +1,102 @@
+<html>
+<head>
+  <title>EON ICP feldolgozas listaja {{ date }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  /* Note: Try to remove the following lines to see the effect of CSS positioning */
+  .affix {
+      top: 0;
+      width: 100%;
+      z-index: 9999 !important;
+  }
+
+  .affix + .container-fluid {
+      padding-top: 70px;
+  }
+  .top-buffer { margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="col-md-16"><h1>EON email küldés <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}} </small> </h1></div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
+    <ul class="nav navbar-nav">
+      <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
+      <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
+    </ul>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="col-md-2">
+      {% if lekerdezo_form is defined %}
+      <form action="/bzmail/ask" method="post">
+        {{ lekerdezo_form.hidden_tag() }}
+        <div class="form-group">
+          <div class="row">
+
+            <div class="col-sm-2"><label>ICP</label></div>
+            <div class="col-sm-1"><input type="checkbox" name="icp" id="icp" {% if system is defined %}{{ systems.get("icp", "") }}{% else %}{{""}}{%endif%}></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2"><label>PU5</label></div>
+            <div class="col-sm-1"><input type="checkbox" name="pu5" id="pu5" {% if system is defined %}{{ systems.get("pu5", "") }}{% else %}{{""}}{%endif%}></div>
+          </div>
+        <div class="row">
+            <div class="col-sm-2"><label>ICQ</label></div>
+            <div class="col-sm-1"><input type="checkbox" name="icq" id="icq" {% if system is defined %}{{ systems.get("icq", "") }}{% else %}{{""}}{%endif%}></div>
+          </div>
+        <div class="row">
+            <div class="col-sm-2"><label>QU5</label></div>
+            <div class="col-sm-1"><input type="checkbox" name="qu5" id="qu5" {% if system is defined %}{{ systems.get("qu5", "") }}{% else %}{{""}}{%endif%}></div>
+          </div>
+        </div>
+        <div class="row"><button type="submit" class="btn btn-primary" id="lsubmit">Lekérdezés</button></div>
+      </form>
+      {% endif %}
+    </div>
+    {% if content_form is defined %}
+    <form action="/bzmail/send" method="post">
+      {{ content_form.hidden_tag() }}
+      <div class="col-md-8">
+        <div class="row top-buffer">
+          <div class="col-sm-2">
+            <label for="to">Címzett:</label>
+          </div>
+          <div class="col-sm-10">
+            <input type="text" name="to" id="to" class="form-control" value="{{content_form.to.data}}">
+          </div>
+        </div>
+        <div class="row top-buffer">
+          <div class="col-sm-2">
+            <label for="cc">Másolatot kap:</label>
+          </div>
+          <div class="col-sm-10">
+            <input type="text" name="cc" id="cc" class="form-control" value="{{content_form.cc.data}}">
+          </div>
+        </div>
+        <div class="row top-buffer">
+          <label for="content">Elküldendő szöveg:</label>
+        </div>
+        <div class="row">
+          <textarea class="form-control" rows="10" id="content" name="content">{{content_form.content.data}}</textarea>
+        </div>
+        <div class="row top-buffer">
+          <button type="submit" class="btn btn-primary btn-block" class="form-control" id="msubmit">Küldés</button>
+        </div>
+      </div>
+    {% endif %}
+    </form>
+  </div>
+</body>
+</html>

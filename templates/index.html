@@ -17,80 +17,50 @@
 
 <body>
   <div class="jumbotron">
-    <h1>  EON Nyomtatási alrendszer állományai</h1>
     <div class="container">
-      <div class="col-md-1 col-md-offset-1"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+      <div class="col-md-16"><h1>  EON Nyomtatási alrendszer állományai</h1></div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
     </div>
   </div>
-
   <div class="container">
         <table class="table table-striped">
           <tr>
-            <td><div class="col-lg-3"><h3>ICP</h3></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
-            {% if system_statuses is defined %}
-              <td>
-              {% if system_statuses['icp'] %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
-              {% else %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
-              {% endif %}
-              </td>
-            {% endif %}
+            <td><div class="col-md-2"><h3>ICP</h3></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/afp/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/zip/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-3 col-md-offset-5"><a href="/qm/ICP" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}<td><div class="col-md-4 col-md-offset-5"><span class="glyphicon {{ 'glyphicon-play' if system_statuses['icp'] else 'glyphicon-pause' }}"></span></div></td>{% endif %}
           </tr>
           <tr>
-            <td><div class="col-lg-3"><h3>PU5</h3></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
-            {% if system_statuses is defined %}
-              <td>
-              {% if system_statuses['pu5'] %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
-              {% else %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
-              {% endif %}
-              </td>
-            {% endif %}
+            <td><div class="col-md-2"><h3>PU5</h3></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/afp/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/zip/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-3 col-md-offset-5"><a href="/qm/PU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}<td><div class="col-md-4 col-md-offset-5"><span class="glyphicon {{ 'glyphicon-play' if system_statuses['pu5'] else 'glyphicon-pause' }}"></span></div></td>{% endif %}
           </tr>
           <tr>
-           <td><div class="col-lg-3"><h3>ICQ</h3></div></td>
-           <td><div class="col-md-2 col-md-offset-5"><a href="/afp/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
-           <td><div class="col-md-2 col-md-offset-5"><a href="/zip/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
-           <td><div class="col-md-2 col-md-offset-5"><a href="/qm/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
-           {% if system_statuses is defined %}
-              <td>
-              {% if system_statuses['icq'] %}
-                <div class="col-md-1 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
-              {% else %}
-                <div class="col-md-1 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
-              {% endif %}
-              </td>
-            {% endif %}
+           <td><div class="col-md-2"><h3>ICQ</h3></div></td>
+           <td><div class="col-md-4 col-md-offset-5"><a href="/afp/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+           <td><div class="col-md-4 col-md-offset-5"><a href="/zip/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+           <td><div class="col-md-4 col-md-offset-5"><a href="/qm/ICX" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+           {% if system_statuses is defined %}<td><div class="col-md-4 col-md-offset-5"><span class="glyphicon {{ 'glyphicon-play' if system_statuses['icq'] else 'glyphicon-pause' }}"></span></div></td>{% endif %}
           </tr>
           <tr>
-            <td><div class="col-lg-3"><h3>QU5</h3></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/afp/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/zip/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
-            <td><div class="col-md-2 col-md-offset-5"><a href="/qm/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
-            {% if system_statuses is defined %}
-              <td>
-              {% if system_statuses['qu5'] %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-play"></span></div> 
-              {% else %}
-                <div class="col-md-2 col-md-offset-5"><span class="glyphicon glyphicon-pause"></span></div> 
-              {% endif %}
-              </td>
-            {% endif %}
+            <td><div class="col-md-2"><h3>QU5</h3></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/afp/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> AFP</a></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/zip/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-envelope"></span> ZIP</a></div></td>
+            <td><div class="col-md-4 col-md-offset-5"><a href="/qm/XU5" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> QM minták</a></div></td>
+            {% if system_statuses is defined %}<td><div class="col-md-4 col-md-offset-5"><span class="glyphicon {{ 'glyphicon-play' if system_statuses['qu5'] else 'glyphicon-pause' }}"></span></div></td>{% endif %}
           </tr>
         </table>
         <table class="table table-striped">
           <tr>
-            <td><div class="col-lg-2"><h3>Riportok</h3></div></td>
+            <td><div class="col-md-2"><h3>Riportok</h3></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/napi_nyitott" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Napi nyitott</a></div></td>
             <td><div class="col-md-2 col-md-offset-5"><a href="/napi_zsort" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span> Napi ZSORT</a></div></td>
+            <td><div class="col-md-4 col-md-offset-3"><a href="/bzmail" type="button" class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Spool lista értesítés <small>Berei Zolinak</small></a></div></td>
           </tr>
         </table>
         <div class="col-md-2 col-md-offset-5"><a href="/kijelentkezes" type="button" class="btn btn-default"><span class="glyphicon glyphicon-log-out"></span>Kijelentkezés</a></div>

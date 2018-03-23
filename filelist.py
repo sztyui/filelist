@@ -16,6 +16,7 @@ import datetime
 import zipfile
 import jinja2
 import socket
+import shlex
 import json
 import sys
 import os
@@ -55,7 +56,7 @@ def zippings(system):
 		json_data["create"] = datetime.datetime.fromtimestamp(json_data["create"])
 		content.append(json_data)
 	return TEMPLATE_ENVIRONMENT.get_template("zip.html").render({
-		"content": content, 
+		"content": sorted(content, key=lambda x: x['create'], reverse=True), 
 		"date": datetime.datetime.now(), 
 		"system": system,
 		"logged_in_as": flask_login.current_user.id

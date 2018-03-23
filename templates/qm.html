@@ -20,38 +20,75 @@
   </style>
 </head>
 <body>
-
-	<div class="jumbotron">
-	<h1>EON {{ system.upper() }} QM <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}} </small> </h1> 
-	<div class="container">
-        <div class="col-md-2 col-md-offset-2"><h4>Bejelentkezve: </h4><span class="label label-default">{{ logged_in_as }}</span></div>
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("qm_table");
+  switching = true;
+  dir = "asc"; 
+  while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    for (i = 1; i < (rows.length - 1); i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      switchcount ++;      
+    } else {
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="col-md-16"><h1>EON {{ system.upper() }} QM <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}} </small> </h1> </div>
     </div>
-	</div>
-
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
 	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
  		<ul class="nav navbar-nav">
  		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
  		  <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
  		</ul>
 	</nav>
-
 	<div class="container-fluid">
 	{% if sorok is defined and sorok|length > 0 %}
-	<table class="table table-hover table-sm table-nonfluid">
+	<table id='qm_table' class="table table-hover table-sm table-nonfluid">
 		<thead class="thead-default">
 			<TR>
-				<TH>Méret</TH>
-				<TH>Készült</TH>
-				<TH>Fájlnév</TH>
+				<TH onclick="sortTable(1)">Fájlnév</TH>
+				<TH onclick="sortTable(2)">Méret</TH>
+				<TH onclick="sortTable(3)">Készült</TH>
 				<TH>Megjelenít</TH>
 			</TR>
 		</thead>
 		{% for line in sorok%}
 			<TR>
-				<TD>{{ line["meret"] }}</TD>
-				<TD>{{ line["formatted_time"].strftime(line['time_format']) }}</TD>
-				<TD> {{ line["fajlnev"] }}</TD>
-				<TD><a href="/qm/download?{{ line['fajl_helye'] }}" target="_blank"><span class="glyphicon glyphicon glyphicon-phone"></span></a></TD>
+				<TD> {{ line["name"] }}</TD>
+				<TD>{{ line["size"] }}</TD>
+				<TD timestamp="{{line['time']}}">{{ line["time_formatted"] }}</TD>
+				<TD><a href="/qm/download?{{ line['fullpath'] }}" target="_blank"><span class="glyphicon glyphicon glyphicon-phone"></span></a></TD>
 			</TR>
 		{% endfor %}
 	</table>

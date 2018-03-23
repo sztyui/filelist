@@ -13,15 +13,22 @@
   <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <style>
+  .top-buffer { margin-top:10px; }
+  .top-buffer-plus { margin-top:20px; }
+  </style>
 </head>
 <body>
     <script src="https://use.typekit.net/ayg4pcz.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
-
     <div class="container">
       <div class="jumbotron">
-      <h1 class="text-center">EON Nyomtatási megjelenítő rendszer</h1>
-        <h1 class="text-center"><small class='login_title text-center'>Jelentkezz be!</small></h1>
+        <div class="container">
+          <div class="col-md-18"><h1>EON Nyomtatási alrendszer állományai</h1></div>
+        </div>
+        <div class="container">
+          <h1 class="text-center"><small class='login_title text-center'>Jelentkezz be!</small></h1>
+        </div>
       </div>
         {% if hibas_bejelentkezes is not none and hibas_bejelentkezes %}
           <h4 class='login_title text-center'>Hibás felhasználónév vagy jelszó!</h4>
@@ -33,18 +40,20 @@
                 <form class="form-signin" method="POST" role="form">
                     <div class="card card-container">
                       <span id="reauth-email" class="reauth-email"></span>
-                      <p class="input_title">Email</p>
-                      <input type="text" name="email" id="email" class="login_box" placeholder="minta@eon.com" required autofocus>
-                      <p class="input_title">Jelszó</p>
-                      <input type="password" id="password" name="password" class="login_box" placeholder="******" required>
+                      <div class="row top-buffer">
+                        <div class="col-md-2"><p class="input_title">Email</p></div>
+                        <div class="col-md-8"><input type="text" name="email" id="email" class="form-control" placeholder="minta@eon.com" required autofocus></div>
+                      </div>
+                      <div class="row top-buffer">
+                        <div class="col-md-2"><p class="input_title">Jelszó</p></div>
+                        <div class="col-md-8"><input type="password" id="password" name="password" class="form-control" placeholder="******" required></div>
+                      </div>
                     </div>
-                    <div class="card card-container">
-                      <br/>
-                      <button class="btn btn-lg btn-primary" type="submit">Bejelentkezés</button><br/>
+                    <div class="row top-buffer-plus">
+                      <button class="btn btn-lg btn-primary btn-block" type="submit">Bejelentkezés</button><br/>
                     </div>
-                    <div class="card card-container">
-                      <br/>
-                      <a href="/jelszo_csere" class="btn btn-info" role="button">Jelszó csere</a>
+                    <div class="row top-buffer">
+                      <a href="/jelszo_csere" class="btn btn-info btn-block" role="button">Jelszó csere</a>
                     </div>
                 </form><!-- /form -->
             </div><!-- /card-container -->

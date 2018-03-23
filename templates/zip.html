@@ -17,16 +17,41 @@
   .affix + .container-fluid {
       padding-top: 70px;
   }
-  </style>
+  .offscreen {
+  position: absolute;
+  left: -1000px;
+  top: 0px;
+  overflow:hidden;
+  width:0;
+}
+.child {
+
+}
+</style>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-	<div class="jumbotron">
-	<h1>EON {{ system }} Kiküldött ZIP fájlok listája <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}}</small></h1>
-	<div class="container">
-    	<div class="col-md-1"><h4>Bejelentkezve: </h4><span class="label label-default">{{ logged_in_as }}</span></div>
-    </div>
-	</div>
+<script>
+function toggleRow(e, length){
+	var subRow = e.parentNode.parentNode.nextElementSibling;
+	
+	var szom = e.querySelector("#szem");
+	szom.className = szom.className === 'glyphicon glyphicon-eye-open' ? "glyphicon glyphicon-eye-close" : "glyphicon glyphicon-eye-open";
 
+	subRow.style.display = subRow.style.display === 'none' ? 'table-row' : 'none';
+    for(i = 0; i<length -1; i++) {
+    	subRow = subRow.nextElementSibling
+    	subRow.style.display = subRow.style.display === 'none' ? 'table-row' : 'none';
+	}
+}
+</script>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="col-md-16"><h1>EON {{ system }} Kiküldött ZIP fájlok listája <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}}</small></h1></div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
 	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
  		<ul class="nav navbar-nav">
  		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
@@ -40,21 +65,23 @@
 		<table id="zipTable" class="table table-hover">
 			<thead class="thead-inverse">
 				<tr>
-					<th>Dátum</th>
-					<th>Fájlnév</th>
+					<th class="col-md-3">Dátum</th>
+					<th class="col-md-8">Fájlnév</th>
+					<th class="col-md-1">Legördít</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for line in content %}
-					<TR background-color="#dff0d8">
-						<td rowspan="{{ line['content']|length + 1 }}">{{ line["create"].strftime('%Y.%m.%d %H:%M:%S') }}</td>
-						<td >
-							{{ line["name"] }}
-						</td>
+					<TR background-color="#dff0d8" class="parent" >
+						<TD class="col-md-3">{{ line["create"].strftime('%Y.%m.%d %H:%M:%S') }}</TD>
+						<TD class="col-md-8">{{ line["name"] }}</TD>
+						<TD class="col-md-1"><a href="#" onclick="toggleRow(this, {{line|length}})"><span id="szem" class="glyphicon glyphicon-eye-open"></span></a><TD>
 					</TR>
 					{% for elem in line["content"] %}
-						<TR>
-							<td>{{ elem }}</td>
+						<TR class="child" style="display: none;">
+							<TD class="col-md-3"></TD>
+							<TD class="col-md-8">{{ elem }}</TD>
+							<TD class="col-md-1"><TD>
 						</TR>
 					{% endfor %}
 				{% endfor %}
