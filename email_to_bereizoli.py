@@ -35,8 +35,8 @@ class SystemForm(FlaskForm):
 	lsubmit = SubmitField('Lekerdez')
 
 class EmailForm(FlaskForm):
-	to = EmailField("Cimzett", [DataRequired(), Email(), InputRequired("Add meg az email cimedet!")], default="istvan.szilagyi.ext@eon.com")
-	cc = EmailField("Masolatot kap", [DataRequired(), Email()], default="istvan.szilagyi.ext@eon.com")
+	to = EmailField("Cimzett", [DataRequired(), Email(), InputRequired("Add meg az email cimedet!")])
+	cc = EmailField("Masolatot kap", [DataRequired(), Email()])
 	content = StringField("Elkuldott szoveg.", widget=TextArea())
 	msubmit = SubmitField('Kuldes')
 
@@ -100,9 +100,6 @@ def send():
 	lekerdezo_form = SystemForm()
 	content_form = EmailForm()
 	if content_form.validate_on_submit():
-		print(content_form.to.data)
-		print(content_form.cc.data)
-		print(content_form.content.data)
 		mail_to_send = {
 			"subject": "Spool feldolgozas {0}".format(datetime.datetime.now().strftime('%Y.%m.%d %H:%M:%S')),
 			"from": "nstrs2@eon.com",
@@ -112,7 +109,6 @@ def send():
 		}
 		try:
 			stdin, _, stderr = ssh.exec_command(config["nstrs2"]["email_to_everyone"])
-			print(json.dumps(mail_to_send))
 			stdin.write(json.dumps(mail_to_send))
 			stdin.write('\n')
 			stdin.flush()

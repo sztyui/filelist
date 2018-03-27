@@ -3,9 +3,14 @@ import flask_login
 import sqlalchemy.orm
 import datetime
 
-from . import login_manager, app
-from .environment import PATH, TEMPLATE_ENVIRONMENT
-from .users import *
+try:
+	from . import login_manager, app
+	from .environment import PATH, TEMPLATE_ENVIRONMENT
+	from .users import *
+except:
+	from icp_filelist import login_manager, app
+	from environment import PATH, TEMPLATE_ENVIRONMENT
+	from users import *
 
 class User(flask_login.UserMixin):
 	pass

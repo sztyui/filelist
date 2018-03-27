@@ -8,6 +8,8 @@ from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy_utils import PasswordType
 from sqlalchemy.ext.declarative import declarative_base
 
+from . import config
+
 Base = declarative_base()
 
 class Users(Base):
@@ -21,7 +23,7 @@ class Users(Base):
 	def __repr__(self):
 		return "#ID: {id}, #Name: {name}, #Password: {password}, #Created_at: {created_at}, #Last_login: {last_login}".format(**self.__dict__)
 
-__engine_place = 'sqlite:///{0}'.format(os.path.join("/tmp/database", "server_users.sqlite"))
+__engine_place = 'sqlite:///{0}'.format(config['app']['database'])
 engine = create_engine(__engine_place)
 Session = sessionmaker(autoflush=True)
 Session.configure(bind=engine)
