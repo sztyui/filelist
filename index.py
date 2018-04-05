@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, abort, request
+from flask import Blueprint, Response, abort, request, url_for
 import flask_login
 import shlex
 
@@ -65,6 +65,7 @@ def mainpage():
 	system_statuses = get_system_statuses()
 	return TEMPLATE_ENVIRONMENT.get_template("index.html").render({
 		"logged_in_as": flask_login.current_user.id,
-		"system_statuses": system_statuses
+		"system_statuses": system_statuses,
+		"static_url": url_for('static', filename="styles/index.css")
 		})
 

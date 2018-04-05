@@ -8,7 +8,10 @@ from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy_utils import PasswordType
 from sqlalchemy.ext.declarative import declarative_base
 
-from . import config
+try:
+	from . import config
+except Exception as e:
+	from config import *
 
 Base = declarative_base()
 

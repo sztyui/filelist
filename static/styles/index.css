@@ -1,7 +1,16 @@
-tr:nth-child(even) {
-	background-color: #CCC;
+.big-box,
+.mini-box {
+    background-color: #10BCFF;
+    color: white;
+    text-align: center;
+    margin: 2px;
+    font-size: 1.5em;
 }
-
-tr:nth-child(odd) {
-	background-color: #FFF;
+.big-box {
+    height: 65px;
+    line-height: 65px;
+}
+.mini-box {
+    height: 30px;
+    line-height: 30px;
 }
