@@ -1,6 +1,7 @@
-from flask import Blueprint, Response, abort, request, url_for
+from flask import Blueprint, Response, abort, request, url_for, send_from_directory
 import flask_login
 import shlex
+import os
 
 try:
 	from .ssh import ssh
@@ -22,7 +23,7 @@ def get_system_statuses():
 		stdin, stdout, stderr = ssh.exec_command("ssh {user}@{server} 'ps -ef | grep \"[S]PG\"'".format(**config[system_name.lower()]))
 		return True if len(stdout.readlines()) else False
 
-	result['icq'] = ask_running("icq")
+	result['icq'] = ask_running("icx")
 	result['qu5'] = result['icq']
 	result['icp'] = ask_running("icp")
 	result['pu5'] = result['icp']
@@ -69,3 +70,8 @@ def mainpage():
 		"static_url": url_for('static', filename="styles/index.css")
 		})
 
+
+@index.route('/favicon.ico')
+def favicon():
+	return send_from_directory(os.path.join(index.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')

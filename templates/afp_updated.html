@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EON {{system}} AFP fájlok listája: {{ date }}</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="col-md-16"><h1>EON {{ system }} AFP fájlok listája <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}}</small></h1></div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
+	<nav class="navbar navbar-inverse">
+ 		<ul class="nav navbar-nav">
+ 		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
+ 		  <li><a href="/zip/{{system}}"><span class="glyphicon glyphicon-picture"> </span> ZIP</a></li>
+ 		  <li><a href="/qm/{{system}}"><span class="glyphicon glyphicon-picture"> </span> QM</a></li>
+ 		  <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
+ 		</ul>
+	</nav>
+	<div ng-app="app" ng-controller="myCtrl" ng-init="system = '{{system}}'">
+{% raw %}
+	<p class="text-center" ng-hide="dataLoaded">
+    	<i class="fa fa-spinner fa-spin"></i>
+	</p>
+	<div class="container-fluid" ng-show="dataLoaded">
+		<table id="afpTable" class="table table-hover">
+			<thead class="thead-inverse">
+				<tr>
+					<th class="col-md-3">Felhasználó</th>
+					<th class="col-md-3">Méret</th>
+					<th class="col-md-3">Dátum</th>
+					<th class="col-md-6">Fájlnév</th>
+					<th class="col-md-3">Letöltés</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="elem in data | orderBy: 'create'">
+				<tr>
+					<td class="col-md-3">{{elem.user}}</td>
+					<td class="col-md-3">{{elem.size | filesize}}</td>
+					<td class="col-md-3">{{elem.create | date: 'medium'}}</td>
+					<td class="col-md-6">{{elem.name}}</td>
+					<td class="col-md-3"><a href="/download/{{system}}/{{elem.name}}" "><span id="szem" class="glyphicon glyphicon-download"></span></a></td>
+				</tr>
+			</tbody>
+		</table>
+{% endraw %}
+	</div>
+	</div>
+<script type="text/javascript" src="/static/js/afp_app.js"></script>
+<script type="text/javascript" src="/static/js/afp_app.controller.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@ from os.path import join, dirname, abspath, isfile
 import configparser
 
 # Config beolvasasa.
-__config_file = join(dirname(abspath(__file__)), "ssh_connection.conf")
+__config_file = join(dirname(abspath(__file__)), "configuration.conf")
 config = configparser.ConfigParser()
 if isfile(__config_file):
 	config.read(__config_file)

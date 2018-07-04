@@ -56,6 +56,9 @@ def login():
 	except sqlalchemy.orm.exc.NoResultFound as e:
 		print(e)
 		return TEMPLATE_ENVIRONMENT.get_template('login.html').render({"hibas_bejelentkezes": True})
+	except sqlalchemy.orm.exc.MultipleResultsFound as e:
+		print(e)
+		return TEMPLATE_ENVIRONMENT.get_template('login.html').render({"hibas_bejelentkezes": True})
 
 	if flask.request.form['password'] == act_user.password:
 		user = User()

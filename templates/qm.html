@@ -1,100 +1,79 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>EON ICP feldolgozas listaja {{ date }}</title>
+  <title>EON {{ system | upper}} QM minták - {{ date }}</title>
   <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
-  /* Note: Try to remove the following lines to see the effect of CSS positioning */
-  .affix {
-      top: 0;
-      width: 100%;
-      z-index: 9999 !important;
-  }
-
-  .affix + .container-fluid {
-      padding-top: 70px;
-  }
-  </style>
 </head>
-<body>
-<script>
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("qm_table");
-  switching = true;
-  dir = "asc"; 
-  while (switching) {
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    for (i = 1; i < (rows.length - 1); i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          shouldSwitch= true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      switchcount ++;      
-    } else {
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-</script>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
   <div class="jumbotron">
     <div class="container">
-      <div class="col-md-16"><h1>EON {{ system.upper() }} QM <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}} </small> </h1> </div>
+      <div class="col-md-16"><h1>EON {{ system | upper}} - QM minták <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}}</small></h1></div>
     </div>
     <div class="container">
       <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
     </div>
   </div>
-	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
- 		<ul class="nav navbar-nav">
- 		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
- 		  <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
- 		</ul>
-	</nav>
-	<div class="container-fluid">
-	{% if sorok is defined and sorok|length > 0 %}
-	<table id='qm_table' class="table table-hover table-sm table-nonfluid">
-		<thead class="thead-default">
-			<TR>
-				<TH onclick="sortTable(1)">Fájlnév</TH>
-				<TH onclick="sortTable(2)">Méret</TH>
-				<TH onclick="sortTable(3)">Készült</TH>
-				<TH>Megjelenít</TH>
-			</TR>
-		</thead>
-		{% for line in sorok%}
-			<TR>
-				<TD> {{ line["name"] }}</TD>
-				<TD>{{ line["size"] }}</TD>
-				<TD timestamp="{{line['time']}}">{{ line["time_formatted"] }}</TD>
-				<TD><a href="/qm/download?{{ line['fullpath'] }}" target="_blank"><span class="glyphicon glyphicon glyphicon-phone"></span></a></TD>
-			</TR>
-		{% endfor %}
-	</table>
-	{% else %}
-		<h2>Nem talaltam adatot a {{date.strftime('%Y.%m.%d')}} napra.</h2>
-	{% endif %}
-	</div>
+  <nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+      <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
+      <li><a href="/afp/{{system}}"><span class="glyphicon glyphicon-picture"> </span> AFP</a></li>
+      <li><a href="/zip/{{system}}"><span class="glyphicon glyphicon-picture"> </span> ZIP</a></li>
+      <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
+    </ul>
+  </nav>
+  <div ng-app="app" ng-controller="myCtrl" ng-init="system = '{{system}}'">
+  {% raw %}
+    <div class="container-fluid">
+    <p class="text-center" ng-hide="dataLoaded">
+      <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+    </p>
+    <div class="col-xs-7" ng-show="dataLoaded">
+      <div class="table-responsive">
+        <table id="afpTable" class="table table-hover text-centered">
+          <thead class="thead-inverse">
+            <tr>
+              <th class="col-md-1">#</th>
+              <th class="col-md-2">Méret</th>
+              <th class="col-md-3">Dátum</th>
+              <th class="col-md-6">Fájlnév</th>
+              <th class="col-md-3">Letöltés</th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="elem in data | orderBy: '-create'">
+            <tr>
+              <td class="col-md-1">{{$index+1}}</td>
+              <td class="col-md-2">{{elem.size | filesize}}</td>
+              <td class="col-md-3">{{elem.create | date: 'y.MM.dd'}}</td>
+              <td class="col-md-6">{{elem.filename}}</td>
+              <td class="col-md-3">
+                <a href="#" ng-click="pdfDownload(system, elem.filename)">
+                  <span id="szem" ng-class="{'glyphicon glyphicon-download': !pdfLoading, 'glyphicon glyphicon-hourglass': pdfLoading}"></span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div ng-show="dataLoaded" class="col-xs-5">
+      <div class="well well-sm">
+        <h3>Minta</h3>
+        <object data="{{pdf_content}}" type="application/pdf" width="100%" height="800px">
+          <p><b>Hiba a pdf megnyitásakor</b>: A böngésződ nem támogatja a PDF beágyazását: <a href="{{pdf_content}}">Letölteni itt tudod</a>!</p>
+        </object>
+      </div>
+    </div>
+
+  </div>
+ </div>   
+  {% endraw %}
+<script type="text/javascript" src="/static/js/qm_app.js"></script>
+<script type="text/javascript" src="/static/js/qm_app.controller.js"></script>
 </body>
 </html>

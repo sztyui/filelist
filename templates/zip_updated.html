@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EON {{system}} Kiküldött ZIP fájlok listája: {{ date }}</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="col-md-16"><h1>EON {{ system }} Kiküldött ZIP fájlok listája <small> {{date.strftime('%Y.%m.%d %H:%M:%S')}}</small></h1></div>
+    </div>
+    <div class="container">
+      <div class="col-md-6"><h5>Bejelentkezve: <span class="label label-default">{{ logged_in_as }}</span></h5></div>
+    </div>
+  </div>
+	<nav class="navbar navbar-inverse">
+ 		<ul class="nav navbar-nav">
+ 		  <li><a href="/"><span class="glyphicon glyphicon-backward"> </span> Vissza</a></li>
+ 		  <li><a href="/qm/{{system}}"><span class="glyphicon glyphicon-picture"> </span> QM</a></li>
+ 		  <li><a href="/afp/{{system}}"><span class="glyphicon glyphicon-picture"> </span> AFP</a></li>
+ 		  <li><a href="/kijelentkezes"><span class="glyphicon glyphicon-log-out"> </span> Kijelentkezes</a></li>
+ 		</ul>
+	</nav>
+	<div ng-app="app" ng-controller="myCtrl" ng-init="system = '{{system}}'">
+{% raw %}		
+	<div class="container-fluid">
+		<table id="zipTable" class="table table-hover">
+			<thead class="thead-inverse">
+				<tr>
+					<th class="col-md-1">Legördít</th>
+					<th class="col-md-5">Dátum</th>
+					<th class="col-md-5">Fájlnév</th>
+					<th class="col-md-1">Küldés</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="elem in data | orderBy: 'create'">
+				<tr>
+					<td class="col-md-1"><a href="#" ng-click="expanded = !expanded"><span id="szem" ng-class="{'glyphicon glyphicon-eye-close': expanded, 'glyphicon glyphicon-eye-open' : !expanded}"></span></a></td>
+					<td class="col-md-3">{{elem.create}}</td>
+					<td class="col-md-8">{{elem.name}}</td>
+					<td class="col-md-1"><a href="#" ng-click="sendOut(system, elem.name)"><span id="szem" class="glyphicon glyphicon-share"></span></a></td>
+				</tr>
+				<tr ng-repeat="cont in elem.content" ng-show="expanded">
+					<td class="col-md-1"></td>
+					<td class="col-md-5"></td>
+					<td class="col-md-5">{{cont}}</td>
+					<td class="col-md-1"></td>
+				</tr>
+			</tbody>
+		</table>
+{% endraw %}
+	</div>
+	</div>
+<script type="text/javascript" src="/static/js/zip_app.js"></script>
+<script type="text/javascript" src="/static/js/zip_app.controller.js"></script>
+</body>
+</html>

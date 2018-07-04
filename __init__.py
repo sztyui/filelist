@@ -3,6 +3,7 @@ try:
 except:
 	from config import config
 
+from logging import INFO
 from flask import Flask, flash
 import flask_login
 import ssl
@@ -10,6 +11,7 @@ import os
 
 # App itself
 app = Flask(__name__)
+app.logger.setLevel(INFO)
 app.secret_key = config['app']['secret_key']
 
 # Login manager :)
@@ -22,6 +24,8 @@ try:
 	from .index import index
 	from .qm_module import qm
 	from .email_to_bereizoli import bzmail
+
+	from .errorhandler import *
 except Exception as e:
 	print('Manual mode: {!r}'.format(e))
 	from login_logic import login
@@ -29,6 +33,8 @@ except Exception as e:
 	from index import index
 	from qm_module import qm
 	from email_to_bereizoli import bzmail
+
+	from errorhandler import *
 
 app.register_blueprint(fl)
 app.register_blueprint(index)
