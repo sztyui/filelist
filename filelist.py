@@ -92,7 +92,7 @@ def zippings(view: str, system: str):
     if request.method == 'GET':
         actual_date = datetime.datetime.now()
         if view.lower() in ['zip', 'afp']:
-            return TEMPLATE_ENVIRONMENT.get_template("{0}_updated.html".format(view.lower())).render({
+            return TEMPLATE_ENVIRONMENT.get_template("{0}.html".format(view.lower())).render({
                 "date": actual_date, 
                 "system": system,
                 "logged_in_as": flask_login.current_user.id
