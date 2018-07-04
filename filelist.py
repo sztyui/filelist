@@ -42,7 +42,7 @@ def get_file(for_download):
 @fl.route("/afps/<system>", methods=['POST', 'GET'], strict_slashes=False)
 @flask_login.login_required
 @lower_it
-def get_afp(system):
+def get_afp(system: str):
     if request.method == 'GET':
         if system not in config.sections():
             abort(404)
@@ -56,12 +56,12 @@ def get_afp(system):
 # For sending out ZIP files to Drescher.
 @fl.route("/zips/<system>", methods=['POST', 'GET'], strict_slashes=False)
 @flask_login.login_required
-def zip_new(system):
-    system_name = system.lower().replace('x', 'q')
+@lower_it
+def zip_new(system: str):
     if request.method == 'GET':
         if system.upper() not in ['ICP', 'PU5', 'ICX', 'XU5']:
             abort(404)
-        command = "ssh -n {user}@{server} 'python {zip_script} {system}'".format(system=system.lower(), **config[system.lower()])
+        command = "ssh -n {user}@{server} 'python {zip_script} {system}'".format(system=system, **config[system])
         stdin, stdout, stderr = ssh.exec_command(command)
         lines = stdout.readlines()
         content = list()
@@ -71,11 +71,11 @@ def zip_new(system):
             content.append(json_data)
         return jsonify(content)
     elif request.method == 'POST':
-        if system.upper() not in ['ICX', 'XU5']:
+        if system not in ['icx', 'xu5']:
             return json.dumps({'error': True}), 200, {'ContentType':'application/json'}
         filename = request.get_json().get('filename', None)
         current_app.logger.warning("user: {0}, resent: {1}".format(flask_login.current_user.id, filename))
-        command = "ssh -n {user}@{server} 'cp {zip}/{filename} {uc4}/{zip_filename}'".format(filename=filename, zip_filename=filename.replace('.zin', '.zik').replace('zip', 'zik'), **config[system.upper()])
+        command = "ssh -n {user}@{server} 'cp {zip}/{filename} {uc4}/{zip_filename}'".format(filename=filename, zip_filename=filename.replace('.zin', '.zik').replace('zip', 'zik'), **config[system])
         _, _, stderr = ssh.exec_command(command)
         if stderr.readlines():
             return json.dumps({'success': True}), 200, {'ContentType':'application/json'}
@@ -88,6 +88,7 @@ def zip_new(system):
 # Zip part Index.
 @fl.route("/<view>/<system>", methods=["GET"])
 @flask_login.login_required
+@lower_it
 def zippings(view: str, system: str):
     if request.method == 'GET':
         actual_date = datetime.datetime.now()
@@ -104,7 +105,8 @@ def zippings(view: str, system: str):
 
 @fl.route("/download/<system>/<filename>")
 @flask_login.login_required
-def download(system: str, filename: str):
+@lower_it
+def download(system: str, filename: str) -> Response:
     if filename:
         command = "source {webserver_download} {system} {file}".format(system=system, file=os.path.basename(filename), **config['nstrs2'])
         stdin, stdout, stderr = ssh.exec_command(command)
